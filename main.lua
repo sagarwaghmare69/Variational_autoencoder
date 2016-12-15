@@ -63,5 +63,5 @@ if verbose then
    print(tsData)
 end
 
-encoder, sampler = dofile('model.lua')
+encoder, sampler, criterions = dofile('model.lua')
 

@@ -53,4 +53,16 @@ local sampler = dofile('sampler.lua')
 
 -- Decoder
 
-return encoder, sampler
+-- Criterions
+dofile('LowerBoundCriterion.lua')
+-- Variational Lower Bound criterion
+local VLBC = nn.LowerBoundCriterion()
+
+-- Reconstruction cost. Using BCE as MNIST is Binary data
+local BCE = nn.BCECriterion()
+
+local criterions = nn.ParallelCriterion()
+criterions:add(VLBC)
+criterions:add(BCE)
+
+return encoder, sampler, criterions
