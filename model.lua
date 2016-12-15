@@ -52,6 +52,31 @@ encoder:add(sharedEncoder):add(gaussianModel)
 local sampler = dofile('sampler.lua')
 
 -- Decoder
+local decoder = nn.Sequential()
+decoder:add(sampler)
+for i=#hiddens,1,-1 do
+   if i==#hiddens then
+      decoder:add(nn.Linear(latentDim, hiddens[i]))
+   else
+      decoder:add(nn.Linear(hiddens[i+1], hiddens[i]))
+   end
+   if useBatchNorm then
+      decoder:add(nn.BatchNormalization(hiddens[i]))
+   end
+   if i ~= 1 then
+      decoder:add(nn[activation]())
+   else
+      decoder:add(nn.Sigmoid()) -- For BCE
+   end
+end
+
+-- Model for criterions
+local critModel = nn.ConcatTable()
+critModel:add(nn.Identity()) -- encoder -> LowerBoundCriterion
+critModel:add(decoder) -- encoder -> (sampler, decoder) -> BCE
+
+local model = nn.Sequential()
+model:add(encoder):add(critModel)
 
 -- Criterions
 dofile('LowerBoundCriterion.lua')
@@ -65,4 +90,4 @@ local criterions = nn.ParallelCriterion()
 criterions:add(VLBC)
 criterions:add(BCE)
 
-return encoder, sampler, criterions
+return model, criterions

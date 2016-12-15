@@ -63,5 +63,12 @@ if verbose then
    print(tsData)
 end
 
-encoder, sampler, criterions = dofile('model.lua')
+model, criterions = dofile('model.lua')
 
+input = torch.rand(32, 784)
+outputs = model:forward(input)
+criterionTargets = {{}, input}
+c = criterions:forward(outputs, criterionTargets)
+c1 = criterions.criterions[1]:forward(outputs[1], criterionTargets[1])
+c2 = criterions.criterions[2]:forward(outputs[2], criterionTargets[2])
+gi = criterions:backward(outputs, criterionTargets)

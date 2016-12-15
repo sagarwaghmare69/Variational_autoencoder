@@ -35,7 +35,10 @@ function LowerBoundCriterion:__init(sizeAverage)
 end
 
 -- cost = 0.5 * sum_j [ -1 - log((sigma_j)^2) + (mean_j)^2 + (sigma_j)^2 ]
-function LowerBoundCriterion:updateOutput(input)
+function LowerBoundCriterion:updateOutput(input, target)
+   -- In this case target is not used as target is unit gaussian.
+   -- This module could be generalized for two gaussians.
+        
    local mean = input[1]
    local logVariance = input[2]
    local N = mean:size(1)
@@ -72,7 +75,10 @@ function LowerBoundCriterion:updateOutput(input)
    return self.output
 end
 
-function LowerBoundCriterion:updateGradInput(input)
+function LowerBoundCriterion:updateGradInput(input, target)
+
+   -- target is not used.
+
    local mean = input[1]
    local logVariance = input[2]
    local N = mean:size(1)
