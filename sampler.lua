@@ -1,5 +1,6 @@
 --[[
    VAE: Gaussian Sampler / Reparameterization trick
+   Figure (4) right hand size in [2].
 
    @author: Sagar M. Waghmare
 --]]

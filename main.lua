@@ -1,8 +1,9 @@
 --[[
    Implementation of Variational Autoencoder.
 
-   Ref: https://arxiv.org/abs/1312.6114
-   Ref: https://arxiv.org/abs/1606.05908 (Tutorial)
+   References:
+   [1]: https://arxiv.org/abs/1312.6114
+   [2]: https://arxiv.org/abs/1606.05908 (Tutorial)
   
    @author: Sagar M. Waghmare
 --]]
